@@ -3,14 +3,17 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <home-swiper :banners="banners" />
-    <recommend-view :recommend="recommends"></recommend-view>
-    <feature-view></feature-view>
-    <tab-control
-      :titles="['流行', '新款', '精选']"
-      class="tab-control"
-    ></tab-control>
-    <good-list :goods="goods['pop'].list"></good-list>
+    <scroll class="content">
+      <home-swiper :banners="banners" />
+      <recommend-view :recommend="recommends"></recommend-view>
+      <feature-view></feature-view>
+      <tab-control
+        :titles="['流行', '新款', '精选']"
+        class="tab-control"
+        @tabClick="tabClick"
+      ></tab-control>
+      <good-list :goods="showGoods"></good-list>
+    </scroll>
   </div>
 </template>
 
@@ -18,6 +21,7 @@
 import NavBar from "components/common/navBar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodList from "components/content/goods/GoodsList";
+import Scroll from "components/common/scroll/Scroll";
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
@@ -31,6 +35,7 @@ export default {
     NavBar,
     TabControl,
     GoodList,
+    Scroll,
     HomeSwiper,
     RecommendView,
     FeatureView,
@@ -44,7 +49,13 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
+      currentType: "pop",
     };
+  },
+  computed: {
+    showGoods() {
+      return this.goods[this.currentType].list;
+    },
   },
   created() {
     this.getHomeMultidata();
@@ -53,6 +64,24 @@ export default {
     this.getHomeGoods("sell");
   },
   methods: {
+    /**
+     * 事件监听相关
+     */
+    tabClick(index) {
+      switch (index) {
+        case 0:
+          this.currentType = "pop";
+          break;
+        case 1:
+          this.currentType = "new";
+          break;
+        case 2:
+          this.currentType = "sell";
+      }
+    },
+    /**
+     * 网络请求相关
+     */
     getHomeMultidata() {
       getHomeMultidata().then((res) => {
         this.banners = res.data.banner.list;
@@ -76,6 +105,8 @@ export default {
 #home {
   padding-top: 44px;
   padding-bottom: 49px;
+  height: 100vh;
+  position: relative;
 }
 .home-nav {
   background-color: var(--color-tint);
@@ -91,5 +122,15 @@ export default {
   position: sticky;
   top: 44px;
   z-index: 9;
+}
+
+.content {
+  /* height: calc(100% - 49px); */
+  overflow: hidden;
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
 }
 </style>
