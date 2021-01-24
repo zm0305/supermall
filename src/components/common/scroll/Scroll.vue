@@ -12,6 +12,12 @@ import BScroll from "better-scroll";
 
 export default {
   name: "Scroll",
+  props: {
+    probeType: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       scroll: {},
@@ -23,9 +29,14 @@ export default {
       click: true,
       // taps: true,
       pullUpLoad: true,
+      probeType: this.probeType,
     });
     this.scroll.on("pullingUp", () => {
       this.scroll.refresh();
+    });
+    //监听滚动区域
+    this.scroll.on("scroll", (position) => {
+      this.$emit("scroll", position);
     });
   },
   methods: {

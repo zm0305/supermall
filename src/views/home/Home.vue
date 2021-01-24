@@ -3,7 +3,12 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content" ref="scroll">
+    <scroll
+      class="content"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+    >
       <home-swiper :banners="banners" />
       <recommend-view :recommend="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -15,7 +20,7 @@
       <good-list :goods="showGoods"></good-list>
     </scroll>
     <!-- 组件无法直接监听@click点击事件 -->
-    <back-top @click.native="backClick"></back-top>
+    <back-top @click.native="backClick" v-show="backTopIsShow"></back-top>
   </div>
 </template>
 
@@ -54,6 +59,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
+      backTopIsShow: false,
     };
   },
   computed: {
@@ -88,6 +94,9 @@ export default {
       //可以通过$refs属性拿到Scroll.vue中的scroll对象，从而操作对应的scrollTo方法
       // this.$refs.scroll.scroll.scrollTo(0, 0, 500);
       this.$refs.scroll.scrollTo(0, 0, 500);
+    },
+    contentScroll(position) {
+      this.backTopIsShow = -position.y > 1000 ? true : false;
     },
     /**
      * 网络请求相关
