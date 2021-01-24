@@ -3,7 +3,7 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <home-swiper :banners="banners" />
       <recommend-view :recommend="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -14,6 +14,8 @@
       ></tab-control>
       <good-list :goods="showGoods"></good-list>
     </scroll>
+    <!-- 组件无法直接监听@click点击事件 -->
+    <back-top @click.native="backClick"></back-top>
   </div>
 </template>
 
@@ -22,6 +24,7 @@ import NavBar from "components/common/navBar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/backTop/BackTop";
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
@@ -36,6 +39,7 @@ export default {
     TabControl,
     GoodList,
     Scroll,
+    BackTop,
     HomeSwiper,
     RecommendView,
     FeatureView,
@@ -78,6 +82,12 @@ export default {
         case 2:
           this.currentType = "sell";
       }
+    },
+    backClick() {
+      //第三个参数为毫秒
+      //可以通过$refs属性拿到Scroll.vue中的scroll对象，从而操作对应的scrollTo方法
+      // this.$refs.scroll.scroll.scrollTo(0, 0, 500);
+      this.$refs.scroll.scrollTo(0, 0, 500);
     },
     /**
      * 网络请求相关
@@ -125,7 +135,6 @@ export default {
 }
 
 .content {
-  /* height: calc(100% - 49px); */
   overflow: hidden;
   position: absolute;
   top: 44px;
@@ -133,4 +142,9 @@ export default {
   left: 0;
   right: 0;
 }
+
+/* .content {
+  height: calc(100%);
+  overflow: hidden;
+} */
 </style>
