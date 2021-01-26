@@ -17,6 +17,10 @@ export default {
       type: Number,
       default: 0,
     },
+    pullUpLoad: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -27,21 +31,32 @@ export default {
     // document.querySelector()获取到的值不准确，因为可能有多个同名class，因此可以使用$refs
     this.scroll = new BScroll(this.$refs.wrapper, {
       click: true,
-      // taps: true,
-      pullUpLoad: true,
+      pullUpLoad: this.pullUpLoad,
       probeType: this.probeType,
     });
-    this.scroll.on("pullingUp", () => {
-      this.scroll.refresh();
-    });
-    //监听滚动区域
-    this.scroll.on("scroll", (position) => {
-      this.$emit("scroll", position);
-    });
+    //2. 监听滚动区域
+    if (this.probeType === 2 || this.probeType === 3) {
+      this.scroll.on("scroll", (position) => {
+        this.$emit("scroll", position);
+      });
+    }
+    //3.监听scroll滚动到底部
+    if (this.pullUpLoad) {
+      this.scroll.on("pullingUp", () => {
+        this.$emit("pullngUp");
+      });
+    }
+    this.scroll.refresh();
   },
   methods: {
     scrollTo(x, y, time = 300) {
-      this.scroll.scrollTo(x, y, time);
+      this.scroll && this.scroll.scrollTo(x, y, time);
+    },
+    finishPullUp() {
+      this.scroll.finishPullUp();
+    },
+    refresh() {
+      this.scroll && this.scroll.refresh();
     },
   },
 };

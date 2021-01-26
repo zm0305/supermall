@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="" />
+    <img :src="goodsItem.show.img" alt="" @load="imageLoad" />
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">￥{{ goodsItem.price }}</span>
@@ -20,6 +20,11 @@ export default {
       },
     },
   },
+  methods: {
+    imageLoad() {
+      this.$bus.$emit("itemImageLoad");
+    },
+  },
 };
 </script>
 
@@ -27,6 +32,7 @@ export default {
 .goods-item {
   position: relative;
   width: 48%;
+  padding-bottom: 40px;
 }
 
 .goods-item img {
@@ -38,6 +44,10 @@ export default {
   font-size: 12px;
   overflow: hidden;
   text-align: center;
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
 }
 
 .goods-info .price {
@@ -57,5 +67,11 @@ export default {
   content: "";
   left: -15px;
   top: -1px;
+}
+
+.goods-info p {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>
