@@ -36,7 +36,10 @@ const routes = [{
   },
   {
     path: '/detail/:iid',
-    component: Detail
+    component: Detail,
+    meta: {
+      hideTab: true
+    }
   }
 ]
 
