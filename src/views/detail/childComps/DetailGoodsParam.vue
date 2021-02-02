@@ -19,6 +19,9 @@
         </tr>
       </table>
     </div>
+    <div class="info-img" v-if="goodsParams.image.length !== 0">
+      <img :src="goodsParams.image" alt="" />
+    </div>
   </div>
 </template>
 
@@ -65,7 +68,17 @@ export default {
   border-bottom: 1px solid #f1f1f1;
 }
 
+.info-table td:nth-child(1),
+.size-table td:nth-child(1) {
+  width: 20%;
+}
+
 .size-table td:nth-child(2) {
   color: var(--color-high-text);
+  line-height: initial;
+}
+
+.info-img img{
+  width: 100%;
 }
 </style>

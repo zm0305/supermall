@@ -87,7 +87,7 @@ export default {
 }
 .desc {
   font-size: 14px;
-  padding: 10px 0;
+  padding: 10px;
 }
 
 .images-list img {

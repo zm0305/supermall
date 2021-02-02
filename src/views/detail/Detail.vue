@@ -1,7 +1,12 @@
 <template>
   <div class="detail">
     <detail-nav-bar></detail-nav-bar>
-    <scroll class="scroll-content" ref="scroll">
+    <scroll
+      class="scroll-content"
+      ref="scroll"
+      @scroll="contentScroll"
+      :probe-type="3"
+    >
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
@@ -10,34 +15,49 @@
         @imageLoad="imageLoad"
       ></detail-goods-info>
       <detail-goods-param :goodsParams="goodsParam"></detail-goods-param>
+      <detail-comments :commentInfo="commentInfo"></detail-comments>
+      <goods-list :goods="recommendList"></goods-list>
     </scroll>
+    <back-top v-if="backTopIsShow" @click.native="backToTop"></back-top>
   </div>
 </template>
 
 <script>
 import NavBar from "components/common/navBar/NavBar";
+import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/backTop/BackTop";
+import GoodsList from "components/content/goods/GoodsList";
+
 import DetailNavBar from "./childComps/DetailNavBar";
 import DetailSwiper from "./childComps/DetailSwiper";
 import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailGoodsParam from "./childComps/DetailGoodsParam";
+import DetailComments from "./childComps/DetailComments";
 
-import Scroll from "components/common/scroll/Scroll";
-
-import { getDetail, Goods, Shop, GoodsParam } from "network/detail";
+import {
+  getDetail,
+  getRecommend,
+  Goods,
+  Shop,
+  GoodsParam,
+} from "network/detail";
 
 export default {
   name: "Detail",
   components: {
     NavBar,
+    Scroll,
+    BackTop,
+    GoodsList,
     DetailNavBar,
     DetailSwiper,
     DetailBaseInfo,
     DetailShopInfo,
     DetailGoodsInfo,
     DetailGoodsParam,
-    Scroll,
+    DetailComments,
   },
   data() {
     return {
@@ -47,6 +67,9 @@ export default {
       shop: {},
       detailInfo: {},
       goodsParam: {},
+      backTopIsShow: false,
+      commentInfo: {},
+      recommendList: [],
     };
   },
   created() {
@@ -70,6 +93,12 @@ export default {
         data.itemParams.info,
         data.itemParams.rule
       );
+
+      this.commentInfo = data.rate;
+    });
+
+    getRecommend().then((res) => {
+      this.recommendList = res.data.list;
     });
   },
   updated() {
@@ -78,6 +107,12 @@ export default {
   methods: {
     imageLoad() {
       this.$refs.scroll.refresh();
+    },
+    contentScroll(position) {
+      this.backTopIsShow = position.y < -1000 ? true : false;
+    },
+    backToTop() {
+      this.$refs.scroll.scrollTo(0, 0);
     },
   },
 };
