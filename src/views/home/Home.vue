@@ -29,7 +29,7 @@
       <good-list :goods="showGoods"></good-list>
     </scroll>
     <!-- 组件无法直接监听@click点击事件 -->
-    <back-top @click.native="backClick" v-show="backTopIsShow"></back-top>
+    <back-top @click.native="backToTop" v-show="backTopIsShow"></back-top>
   </div>
 </template>
 
@@ -38,14 +38,13 @@ import NavBar from "components/common/navBar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
-import BackTop from "components/content/backTop/BackTop";
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { itemListenerMinxin } from "common/mixin";
+import { itemListenerMinxin, backTopMinxin } from "common/mixin";
 
 export default {
   name: "Home",
@@ -54,7 +53,6 @@ export default {
     TabControl,
     GoodList,
     Scroll,
-    BackTop,
     HomeSwiper,
     RecommendView,
     FeatureView,
@@ -69,12 +67,11 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
-      backTopIsShow: false,
       tabOffsetTop: 0,
       isTabFixed: false,
     };
   },
-  mixins: [itemListenerMinxin],
+  mixins: [itemListenerMinxin, backTopMinxin],
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
@@ -120,12 +117,6 @@ export default {
       }
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
-    },
-    backClick() {
-      //第三个参数为毫秒
-      //可以通过$refs属性拿到Scroll.vue中的scroll对象，从而操作对应的scrollTo方法
-      // this.$refs.scroll.scroll.scrollTo(0, 0, 500);
-      this.$refs.scroll.scrollTo(0, 0, 500);
     },
     contentScroll(position) {
       //1.判断backTop是否显示

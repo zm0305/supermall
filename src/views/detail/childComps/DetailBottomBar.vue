@@ -15,8 +15,8 @@
       </div>
     </div>
     <div class="bar-item bar-right">
-      <div class="text addCart">加入购物车</div>
-      <div class="text buy">购买</div>
+      <div class="addCart">加入购物车</div>
+      <div class="buy">购买</div>
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 .bottom-bar {
-  height: 58px;
+  height: 50px;
   background: #fff;
   position: fixed;
   left: 0;
@@ -69,11 +69,12 @@ export default {
 }
 
 .text {
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .bar-right {
-  line-height: 58px;
+  line-height: 50px;
+  font-size: 15px;
 }
 
 .addCart {

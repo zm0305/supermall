@@ -32,7 +32,6 @@
 <script>
 import NavBar from "components/common/navBar/NavBar";
 import Scroll from "components/common/scroll/Scroll";
-import BackTop from "components/content/backTop/BackTop";
 import GoodsList from "components/content/goods/GoodsList";
 
 import DetailNavBar from "./childComps/DetailNavBar";
@@ -44,7 +43,7 @@ import DetailGoodsParam from "./childComps/DetailGoodsParam";
 import DetailComments from "./childComps/DetailComments";
 import DetailBottomBar from "./childComps/DetailBottomBar";
 
-import { itemListenerMinxin } from "common/mixin";
+import { itemListenerMinxin, backTopMinxin } from "common/mixin";
 import { debounce } from "common/utils";
 
 import {
@@ -60,7 +59,6 @@ export default {
   components: {
     NavBar,
     Scroll,
-    BackTop,
     GoodsList,
     DetailNavBar,
     DetailSwiper,
@@ -71,7 +69,7 @@ export default {
     DetailComments,
     DetailBottomBar,
   },
-  mixins: [itemListenerMinxin],
+  mixins: [itemListenerMinxin, backTopMinxin],
   data() {
     return {
       iid: null,
@@ -80,7 +78,6 @@ export default {
       shop: {},
       detailInfo: {},
       goodsParam: {},
-      backTopIsShow: false,
       commentInfo: {},
       recommendList: [],
       themeTopY: [],
@@ -178,9 +175,6 @@ export default {
           }
         }
       }
-    },
-    backToTop() {
-      this.$refs.scroll.scrollTo(0, 0);
     },
     titleClick(index) {
       console.log(index);
