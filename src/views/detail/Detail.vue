@@ -24,6 +24,7 @@
       ></detail-comments>
       <goods-list :goods="recommendList" ref="recommend"></goods-list>
     </scroll>
+    <detail-bottom-bar></detail-bottom-bar>
     <back-top v-if="backTopIsShow" @click.native="backToTop"></back-top>
   </div>
 </template>
@@ -41,6 +42,7 @@ import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailGoodsParam from "./childComps/DetailGoodsParam";
 import DetailComments from "./childComps/DetailComments";
+import DetailBottomBar from "./childComps/DetailBottomBar";
 
 import { itemListenerMinxin } from "common/mixin";
 import { debounce } from "common/utils";
@@ -67,6 +69,7 @@ export default {
     DetailGoodsInfo,
     DetailGoodsParam,
     DetailComments,
+    DetailBottomBar,
   },
   mixins: [itemListenerMinxin],
   data() {
@@ -200,7 +203,7 @@ export default {
 }
 
 .scroll-content {
-  height: calc(100% - 44px);
+  height: calc(100% - 44px - 58px);
   overflow: hidden;
 }
 </style>
