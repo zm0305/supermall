@@ -45,7 +45,7 @@ import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "common/utils";
+import { itemListenerMinxin } from "common/mixin";
 
 export default {
   name: "Home",
@@ -74,10 +74,19 @@ export default {
       isTabFixed: false,
     };
   },
+  mixins: [itemListenerMinxin],
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
     },
+  },
+  deactivated() {
+    /**
+     * Home组件做了缓存，因此会调用actived和deactivated
+     * 接GoodsListItem.vue Line33，因此可以在离开Home组件时，取消掉绑定在事件总线上的事件，
+     * 需要注意此处传入第二个参数的函数需要和绑定时的函数是同一个，因此需要在data中新增一个属性来绑定
+     */
+    this.$bus.$off("itemImageLoad", this.refreshListener);
   },
   created() {
     this.getHomeMultidata();
@@ -85,13 +94,14 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
-  mounted() {
-    //1.图片加载完成的事件监听
-    const refresh = debounce(this.$refs.scroll.refresh);
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
-  },
+  // mounted() {
+  //   //1.图片加载完成的事件监听
+  //   const refresh = debounce(this.$refs.scroll.refresh);
+  //   this.homeItemListener = () => {
+  //     refresh();
+  //   };
+  //   this.$bus.$on("itemImageLoad", this.homeItemListener);
+  // },
   methods: {
     /**
      * 事件监听相关

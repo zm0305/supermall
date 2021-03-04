@@ -29,6 +29,10 @@ export default {
   },
   methods: {
     imageLoad() {
+      /**
+       * 因为首页和详情页都使用了此组件，在详情页页面加载完成时是不需要事件总线发送到Home组件去刷新滑动组件的高度的，
+       * 因此需要在Home.vue中做对应处理，接Home.vue Line84
+       */
       this.$bus.$emit("itemImageLoad");
     },
     itemClick() {

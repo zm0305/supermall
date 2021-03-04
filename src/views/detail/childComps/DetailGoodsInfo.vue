@@ -39,9 +39,13 @@ export default {
   },
   methods: {
     imageLoad() {
-      if (++this.counter === this.imageLength) {
-        this.$emit("imageLoad");
-      }
+      //解决页面滚动高度的问题
+      //1.判断图片是不是最后一张
+      // if (++this.counter === this.imageLength) {
+      //   this.$emit("imageLoad");
+      // }
+      //2.利用防抖
+      this.$emit("imageLoad");
     },
   },
   watch: {
