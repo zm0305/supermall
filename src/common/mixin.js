@@ -1,7 +1,7 @@
 import { debounce } from "./utils";
 import BackTop from "components/content/backTop/BackTop";
 
-export const itemListenerMinxin = {
+export const itemListenerMixin = {
   data() {
     return {
       refreshListener: null,
@@ -18,7 +18,7 @@ export const itemListenerMinxin = {
 }
 
 //methods函数中的内容不能再抽出来，会被覆盖
-export const backTopMinxin = {
+export const backTopMixin = {
   data() {
     return {
       backTopIsShow: false,

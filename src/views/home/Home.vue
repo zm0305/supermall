@@ -44,7 +44,7 @@ import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { itemListenerMinxin, backTopMinxin } from "common/mixin";
+import { itemListenerMixin, backTopMixin } from "common/mixin";
 
 export default {
   name: "Home",
@@ -71,7 +71,7 @@ export default {
       isTabFixed: false,
     };
   },
-  mixins: [itemListenerMinxin, backTopMinxin],
+  mixins: [itemListenerMixin, backTopMixin],
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;

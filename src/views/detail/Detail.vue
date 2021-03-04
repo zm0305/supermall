@@ -43,7 +43,7 @@ import DetailGoodsParam from "./childComps/DetailGoodsParam";
 import DetailComments from "./childComps/DetailComments";
 import DetailBottomBar from "./childComps/DetailBottomBar";
 
-import { itemListenerMinxin, backTopMinxin } from "common/mixin";
+import { itemListenerMixin, backTopMixin } from "common/mixin";
 import { debounce } from "common/utils";
 
 import {
@@ -69,7 +69,7 @@ export default {
     DetailComments,
     DetailBottomBar,
   },
-  mixins: [itemListenerMinxin, backTopMinxin],
+  mixins: [itemListenerMixin, backTopMixin],
   data() {
     return {
       iid: null,
