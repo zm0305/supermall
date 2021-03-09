@@ -24,7 +24,7 @@
       ></detail-comments>
       <goods-list :goods="recommendList" ref="recommend"></goods-list>
     </scroll>
-    <detail-bottom-bar @addCart="addCart"></detail-bottom-bar>
+    <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
     <back-top v-if="backTopIsShow" @click.native="backToTop"></back-top>
   </div>
 </template>
@@ -45,6 +45,8 @@ import DetailBottomBar from "./childComps/DetailBottomBar";
 
 import { itemListenerMixin, backTopMixin } from "common/mixin";
 import { debounce } from "common/utils";
+
+import { mapActions } from "vuex";
 
 import {
   getDetail,
@@ -142,6 +144,7 @@ export default {
     this.$refs.scroll.refresh();
   },
   methods: {
+    ...mapActions(["addCart"]),
     imageLoad() {
       //解决页面滚动高度的问题
       //1.判断图片是不是最后一张，然后就直接调用refresh方法
@@ -180,7 +183,7 @@ export default {
       console.log(index);
       this.$refs.scroll.scrollTo(0, -this.themeTopY[index], 100);
     },
-    addCart() {
+    addToCart() {
       const product = {
         iid: this.iid,
         image: this.topImages[0],
@@ -189,7 +192,14 @@ export default {
         desc: this.goods.desc,
       };
       // this.$store.commit("addCart", product);
-      this.$store.dispatch("addCart", product);
+      //普通写法
+      // this.$store.dispatch("addCart", product).then((res) => {
+      //   console.log(res);
+      // });
+      //采用vuex的mapActions的写法
+      this.addCart(product).then((res) => {
+        console.log(res);
+      });
     },
   },
   //detail组件没有做缓存，因此在离开时会调用destory函数
