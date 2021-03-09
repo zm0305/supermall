@@ -24,7 +24,7 @@
       ></detail-comments>
       <goods-list :goods="recommendList" ref="recommend"></goods-list>
     </scroll>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addCart="addCart"></detail-bottom-bar>
     <back-top v-if="backTopIsShow" @click.native="backToTop"></back-top>
   </div>
 </template>
@@ -179,6 +179,17 @@ export default {
     titleClick(index) {
       console.log(index);
       this.$refs.scroll.scrollTo(0, -this.themeTopY[index], 100);
+    },
+    addCart() {
+      const product = {
+        iid: this.iid,
+        image: this.topImages[0],
+        name: this.goods.title,
+        price: this.goods.nowPrice,
+        desc: this.goods.desc,
+      };
+      // this.$store.commit("addCart", product);
+      this.$store.dispatch("addCart", product);
     },
   },
   //detail组件没有做缓存，因此在离开时会调用destory函数
