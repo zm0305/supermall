@@ -85,6 +85,8 @@ export default {
       themeTopY: [],
       getThemeTopY: null,
       currentIndex: 0,
+      message: "",
+      isShow: false,
     };
   },
   mounted() {},
@@ -198,7 +200,15 @@ export default {
       // });
       //采用vuex的mapActions的写法
       this.addCart(product).then((res) => {
-        console.log(res);
+        // this.message = res;
+        // this.isShow = true;
+        // console.log(res);
+        // setTimeout(() => {
+        //   this.isShow = false;
+        //   this.message = "";
+        // }, 1500);
+        // console.log(this.$toast);
+        this.$toast.show(res);
       });
     },
   },

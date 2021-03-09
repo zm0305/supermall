@@ -8,7 +8,7 @@
       <span>全选</span>
     </div>
     <div class="total-price">合计：{{ totalPrice }}</div>
-    <div class="calculate">去计算({{ checkedLength }})</div>
+    <div class="calculate" @click="calcClick">去计算({{ checkedLength }})</div>
   </div>
 </template>
 
@@ -37,10 +37,9 @@ export default {
       );
     },
     checkedLength() {
-      return this.cartList
-        .filter((item) => {
-          return item.checked;
-        }).length;
+      return this.cartList.filter((item) => {
+        return item.checked;
+      }).length;
     },
     isSelectAll() {
       if (this.cartList.length === 0) return false;
@@ -54,6 +53,11 @@ export default {
         this.cartList.map((item) => (item.checked = false));
       } else {
         this.cartList.map((item) => (item.checked = true));
+      }
+    },
+    calcClick() {
+      if (!this.checkedLength) {
+        this.$toast.show("请选择要购买的商品");
       }
     },
   },
